@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,28 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});
+
+
+Route::get('/skills', [HomeController::class,'skills']);
+
+Route::get('/certs', [HomeController::class,'certs']);
+
+Route::get('/about', [HomeController::class,'about']);
+
+Route::get('/projects', [HomeController::class,'projects']);
+
+Route::get('/contact', [HomeController::class,'contact']);
+
+Route::post('/message', [HomeController::class,'contactmsg']);
